@@ -1,6 +1,7 @@
 package uek.krakow.pl.Gym_App.user;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import uek.krakow.pl.Gym_App.exercise.Exercise;
 import uek.krakow.pl.Gym_App.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import uek.krakow.pl.Gym_App.training.Training;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -32,6 +34,12 @@ public class User implements UserDetails {
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
+  @OneToMany(mappedBy = "user")
+  private List<Exercise> exercises;
+
+  @OneToMany(mappedBy = "user")
+  private List<Training> trainings;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

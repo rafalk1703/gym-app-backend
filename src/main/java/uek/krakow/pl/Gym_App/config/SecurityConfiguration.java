@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration
@@ -26,6 +27,10 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+    http.authorizeHttpRequests()
+            .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll();
+    http.headers().frameOptions().disable();
     http
         .csrf()
         .disable()
