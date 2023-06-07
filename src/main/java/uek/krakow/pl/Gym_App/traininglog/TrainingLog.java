@@ -21,14 +21,14 @@ public class TrainingLog {
     @GeneratedValue
     public Integer id;
 
-    @Column(nullable = false)
-    public Date startDate;
+    @Column
+    public String startDate;
+
+    @Column
+    public String endDate;
 
     @Column(nullable = false)
-    public Date endDate;
-
-    @Column(nullable = false)
-    public Boolean isDone;
+    public Boolean isDone = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_id")

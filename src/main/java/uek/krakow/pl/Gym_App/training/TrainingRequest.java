@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TrainingRequest {
 
-    public String name;
+    private Integer treningId;
+    private String name;
 
 }
