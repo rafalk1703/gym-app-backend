@@ -25,9 +25,6 @@ public class Training {
     @Column(nullable = false)
     public String name;
 
-    @Column(nullable = false)
-    public Boolean isDone;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User user;

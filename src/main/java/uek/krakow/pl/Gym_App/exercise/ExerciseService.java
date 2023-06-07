@@ -88,6 +88,7 @@ public class ExerciseService {
                     exercise.setType(type);
                     return exerciseRepository.save(exercise);
                 });
+
         return exerciseId;
     }
 
@@ -107,9 +108,7 @@ public class ExerciseService {
         exercise.setType(type);
         exercise.setUser(user);
 
-        Exercise savedExercise = exerciseRepository.save(exercise);
-
-        return savedExercise.getId();
+        return exerciseRepository.save(exercise).getId();
 
     }
 

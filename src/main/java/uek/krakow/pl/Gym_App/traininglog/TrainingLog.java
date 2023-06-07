@@ -27,6 +27,9 @@ public class TrainingLog {
     @Column(nullable = false)
     public Date endDate;
 
+    @Column(nullable = false)
+    public Boolean isDone;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_id")
     public Training training;
