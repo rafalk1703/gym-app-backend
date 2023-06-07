@@ -1,10 +1,11 @@
-package uek.krakow.pl.Gym_App.exercise;
+package uek.krakow.pl.Gym_App.exercise.exercisetype;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uek.krakow.pl.Gym_App.exercise.Exercise;
 
 import java.util.List;
 

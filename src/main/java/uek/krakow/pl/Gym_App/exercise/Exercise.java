@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uek.krakow.pl.Gym_App.exercise.exercisetype.ExerciseType;
 import uek.krakow.pl.Gym_App.training.Training;
 import uek.krakow.pl.Gym_App.user.User;
 
@@ -21,8 +22,24 @@ public class Exercise {
     @GeneratedValue
     public Integer id;
 
-    @Column(unique = true)
-    public String token;
+    @Column(nullable = false)
+    public String name;
+
+    @Column(nullable = false)
+    public String description;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    public ExerciseLevel level;
+
+    @Column(nullable = false)
+    public String time;
+
+    @Column
+    public Integer reps;
+
+    @Column
+    public Integer sets;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
