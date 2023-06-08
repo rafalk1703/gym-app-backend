@@ -15,22 +15,33 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/exercises")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
 
     private final JwtService jwtService;
 
-    @GetMapping
+    @GetMapping("/global")//git
+    public ResponseEntity<List<ExerciseResponse>> getAllExercises() {
+        return new ResponseEntity<>(exerciseService.getAllExercises(), HttpStatus.OK);
+    }
+
+    @GetMapping//git
     public ResponseEntity<List<ExerciseResponse>> getAllExercises(@RequestHeader("Authorization") String jwt) {
         String userEmail = jwtService.extractUserEmailFromToken(jwt.replace("Bearer ", ""));
         return new ResponseEntity<>(exerciseService.getAllExercisesByUserEmail(userEmail), HttpStatus.OK);
     }
 
-    @GetMapping("/type/{typeId}")
+    @GetMapping("/type/{typeId}")//git
     public ResponseEntity<List<ExerciseResponse>> getAllExercisesByType(@RequestHeader("Authorization") String jwt, @PathVariable("typeId") Integer typeId) {
         String userEmail = jwtService.extractUserEmailFromToken(jwt.replace("Bearer ", ""));
         return new ResponseEntity<>(exerciseService.getAllExercisesByUserEmailAndTypeId(userEmail, typeId), HttpStatus.OK);
+    }
+
+    @GetMapping("/global/type/{typeId}")//git
+    public ResponseEntity<List<ExerciseResponse>> getAllGlobalExercisesByType(@PathVariable("typeId") Integer typeId) {
+        return new ResponseEntity<>(exerciseService.getAllGlobalExercisesByTypeId(typeId), HttpStatus.OK);
     }
 
     @GetMapping("/training/{trainingId}")
@@ -45,11 +56,22 @@ public class ExerciseController {
         return new ResponseEntity<>(exerciseService.getExerciseById(exerciseId), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/global")
+    public ResponseEntity<Integer> addGlobalExercise(@RequestBody ExerciseRequest request) {
+        return new ResponseEntity<>(exerciseService.addNewGlobalExercise(request), HttpStatus.OK);
+    }
+
+    @PostMapping//TODO
     public ResponseEntity<Integer> addExercise(@RequestHeader("Authorization") String jwt, @RequestBody ExerciseRequest request) {
         String userEmail = jwtService.extractUserEmailFromToken(jwt.replace("Bearer ", ""));
+        return new ResponseEntity<>(exerciseService.addNewUserExercise(userEmail, request), HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(exerciseService.addNewExercise(userEmail, request), HttpStatus.OK);
+    @PostMapping("/addToLiked/exercise/{exerciseId}")//git
+    public ResponseEntity<Void> addExerciseToLikedByUser(@RequestHeader("Authorization") String jwt, @PathVariable("exerciseId") Integer exerciseId) {
+        String userEmail = jwtService.extractUserEmailFromToken(jwt.replace("Bearer ", ""));
+        exerciseService.addUserToExercise(userEmail, exerciseId);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/addToTrainings/exercise/{exerciseId}")

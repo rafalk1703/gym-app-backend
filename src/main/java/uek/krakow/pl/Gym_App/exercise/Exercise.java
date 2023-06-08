@@ -9,6 +9,7 @@ import uek.krakow.pl.Gym_App.exercise.exercisetype.ExerciseType;
 import uek.krakow.pl.Gym_App.training.Training;
 import uek.krakow.pl.Gym_App.user.User;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -41,9 +42,8 @@ public class Exercise {
     @Column
     public Integer sets;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    public User user;
+    @ManyToMany(fetch = FetchType.LAZY)
+    public List<User> users = new LinkedList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")

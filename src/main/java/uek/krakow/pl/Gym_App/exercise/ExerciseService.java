@@ -45,23 +45,33 @@ public class ExerciseService {
     }
 
     public List<ExerciseResponse> getAllExercisesByUserEmail(String userEmail) {
-        return exerciseRepository.findExercisesByUser_Email(userEmail)
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return exerciseRepository.findExercisesByUsersContains(user)
                 .stream()
                 .map(exerciseResponseMapper)
                 .collect(Collectors.toList());
     }
 
+
+    public List<ExerciseResponse>  getAllGlobalExercisesByTypeId(Integer typeId) {
+        return exerciseRepository.findExercisesByType_Id(typeId)
+                .stream()
+                .map(exerciseResponseMapper)
+                .collect(Collectors.toList());
+    }
     public List<ExerciseResponse> getAllExercisesByUserEmailAndTrainingId(String userEmail, Integer trainingId) {
         Training training = trainingRepository.findById(trainingId).orElseThrow(() -> new ResourceNotFoundException("Training not found"));
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        return exerciseRepository.findExercisesByUser_EmailAndTrainingsContains(userEmail, training)
+        return exerciseRepository.findExercisesByUsersContainsAndTrainingsContains(user, training)
                 .stream()
                 .map(exerciseResponseMapper)
                 .collect(Collectors.toList());
     }
 
     public List<ExerciseResponse> getAllExercisesByUserEmailAndTypeId(String userEmail, Integer typeId) {
-        return exerciseRepository.findExercisesByUser_EmailAndAndType_Id(userEmail, typeId)
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return exerciseRepository.findExercisesByUsersContainsAndType_Id(user, typeId)
                 .stream()
                 .map(exerciseResponseMapper)
                 .collect(Collectors.toList());
@@ -95,10 +105,35 @@ public class ExerciseService {
         return exerciseId;
     }
 
+    public Integer addUserToExercise(String userEmail, Integer exerciseId) {
 
-    public Integer addNewExercise(String userEmail, ExerciseRequest request) {
+        Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        ExerciseType type = exerciseTypeRepository.findByName(request.getType()).orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
+        exercise.getUsers().add(user);
+        return exerciseRepository.save(exercise).getId();
+    }
+
+    public Integer addNewGlobalExercise(ExerciseRequest request) {
+
+        ExerciseType type = exerciseTypeRepository.findByName(request.getType()).orElseThrow(() -> new ResourceNotFoundException("Exercise type not found"));
+
+        Exercise exercise = new Exercise();
+        exercise.setName(request.getName());
+        exercise.setReps(request.getReps());
+        exercise.setDescription(request.getDescription());
+        exercise.setLevel(ExerciseLevel.valueOf(request.getLevel()));
+        exercise.setSets(request.getSets());
+        exercise.setTime(request.getTime());
+        exercise.setType(type);
+
+        return exerciseRepository.save(exercise).getId();
+
+    }
+
+    public Integer addNewUserExercise(String userEmail, ExerciseRequest request) {
+
+        ExerciseType type = exerciseTypeRepository.findByName(request.getType()).orElseThrow(() -> new ResourceNotFoundException("Exercise type not found"));
         User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Exercise exercise = new Exercise();
@@ -109,7 +144,7 @@ public class ExerciseService {
         exercise.setSets(request.getSets());
         exercise.setTime(request.getTime());
         exercise.setType(type);
-        exercise.setUser(user);
+        exercise.getUsers().add(user);
 
         return exerciseRepository.save(exercise).getId();
 
