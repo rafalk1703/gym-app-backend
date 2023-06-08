@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/exerciseTypes")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ExerciseTypeController {
 
     private final ExerciseTypeService exerciseTypeService;
