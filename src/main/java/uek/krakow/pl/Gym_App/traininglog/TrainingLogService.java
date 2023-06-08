@@ -2,6 +2,8 @@ package uek.krakow.pl.Gym_App.traininglog;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uek.krakow.pl.Gym_App.exception.DeleteException;
+import uek.krakow.pl.Gym_App.exception.ResourceNotFoundException;
 import uek.krakow.pl.Gym_App.training.Training;
 import uek.krakow.pl.Gym_App.training.TrainingRepository;
 
@@ -23,7 +25,7 @@ public class TrainingLogService {
     public TrainingLogResponse getTrainingLogById(int trainingLogId) {
         return trainingLogRepository.findById(trainingLogId)
                 .map(trainingLogResponseMapper)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("Training log not found"));
     }
 
     public List<TrainingLogResponse> getAllTrainingLogsByUserEmail(String userEmail) {
@@ -34,7 +36,7 @@ public class TrainingLogService {
     }
 
     public Integer startTraining(Integer trainingId) {
-        Training training = trainingRepository.findById(trainingId).orElseThrow();
+        Training training = trainingRepository.findById(trainingId).orElseThrow(() -> new ResourceNotFoundException("Training not found"));
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
 
@@ -47,7 +49,7 @@ public class TrainingLogService {
 
 
     public Integer endTraining(Integer trainingLogId) {
-        TrainingLog endedTrainingLog = trainingLogRepository.findById(trainingLogId).orElseThrow();
+        TrainingLog endedTrainingLog = trainingLogRepository.findById(trainingLogId).orElseThrow(() -> new ResourceNotFoundException("Training log not found"));
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
 
@@ -59,6 +61,10 @@ public class TrainingLogService {
 
 
     public void removeById(Integer id) {
-        trainingLogRepository.deleteById(id);
+        if (trainingLogRepository.existsById(id)) {
+            trainingLogRepository.deleteById(id);
+        } else {
+            throw new DeleteException("Object not found");
+        }
     }
 }

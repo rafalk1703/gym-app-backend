@@ -2,6 +2,8 @@ package uek.krakow.pl.Gym_App.training;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uek.krakow.pl.Gym_App.exception.DeleteException;
+import uek.krakow.pl.Gym_App.exception.ResourceNotFoundException;
 import uek.krakow.pl.Gym_App.exercise.*;
 import uek.krakow.pl.Gym_App.user.User;
 import uek.krakow.pl.Gym_App.user.UserRepository;
@@ -22,7 +24,7 @@ public class TrainingService {
     public TrainingResponse getTrainingById(int trainingId) {
         return trainingRepository.findById(trainingId)
                 .map(trainingResponseMapper)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("Training not found"));
     }
 
     public List<TrainingResponse> getAllTrainings() {
@@ -56,7 +58,7 @@ public class TrainingService {
 
     public Integer addNewTraining(String userEmail, TrainingRequest request) {
 
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Training training = new Training();
         training.setName(request.getName());
@@ -68,7 +70,10 @@ public class TrainingService {
 
 
     public void removeById(Integer id) {
-        trainingRepository.deleteById(id);
+        if (trainingRepository.existsById(id)) {
+            trainingRepository.deleteById(id);
+        } else {
+            throw new DeleteException("Object not found");
+        }
     }
-
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uek.krakow.pl.Gym_App.auth.RegisterRequest;
 import uek.krakow.pl.Gym_App.config.JwtService;
+import uek.krakow.pl.Gym_App.training.TrainingListRequest;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -51,6 +52,12 @@ public class ExerciseController {
         return new ResponseEntity<>(exerciseService.addNewExercise(userEmail, request), HttpStatus.OK);
     }
 
+    @PostMapping("/addToTrainings/exercise/{exerciseId}")
+    public ResponseEntity<Void> addExerciseToTrainings(@PathVariable("exerciseId") Integer exerciseId, @RequestBody TrainingListRequest trainingIds) {
+        exerciseService.addExerciseToTrainings(exerciseId, trainingIds);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/{exerciseId}")
     public ResponseEntity<Integer> updateExercise(@PathVariable("exerciseId") Integer exerciseId, @RequestBody ExerciseRequest request) {
         return new ResponseEntity<>(exerciseService.updateExerciseById(exerciseId, request), HttpStatus.OK);
@@ -59,6 +66,6 @@ public class ExerciseController {
     @DeleteMapping("/{exerciseId}")
     public ResponseEntity<Void> removeExercise(@PathVariable("exerciseId") Integer exerciseId) {
         exerciseService.removeById(exerciseId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

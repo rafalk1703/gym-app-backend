@@ -1,6 +1,7 @@
 package uek.krakow.pl.Gym_App.auth;
 
 import uek.krakow.pl.Gym_App.config.JwtService;
+import uek.krakow.pl.Gym_App.exception.BadRequestException;
 import uek.krakow.pl.Gym_App.token.Token;
 import uek.krakow.pl.Gym_App.token.TokenRepository;
 import uek.krakow.pl.Gym_App.token.TokenType;
@@ -22,6 +23,9 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
 
   public AuthenticationResponse register(RegisterRequest request) {
+    if (repository.findByEmail(request.getEmail()).isPresent()) {
+      throw new BadRequestException("Email address already in use.");
+    }
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())

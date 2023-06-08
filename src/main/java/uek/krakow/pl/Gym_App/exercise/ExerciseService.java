@@ -3,9 +3,12 @@ package uek.krakow.pl.Gym_App.exercise;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uek.krakow.pl.Gym_App.exception.DeleteException;
+import uek.krakow.pl.Gym_App.exception.ResourceNotFoundException;
 import uek.krakow.pl.Gym_App.exercise.exercisetype.ExerciseType;
 import uek.krakow.pl.Gym_App.exercise.exercisetype.ExerciseTypeRepository;
 import uek.krakow.pl.Gym_App.training.Training;
+import uek.krakow.pl.Gym_App.training.TrainingListRequest;
 import uek.krakow.pl.Gym_App.training.TrainingRepository;
 import uek.krakow.pl.Gym_App.user.User;
 import uek.krakow.pl.Gym_App.user.UserRepository;
@@ -31,7 +34,7 @@ public class ExerciseService {
     public ExerciseResponse getExerciseById(int exerciseId) {
         return exerciseRepository.findById(exerciseId)
                 .map(exerciseResponseMapper)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
     }
 
     public List<ExerciseResponse> getAllExercises() {
@@ -49,7 +52,7 @@ public class ExerciseService {
     }
 
     public List<ExerciseResponse> getAllExercisesByUserEmailAndTrainingId(String userEmail, Integer trainingId) {
-        Training training = trainingRepository.getReferenceById(trainingId);
+        Training training = trainingRepository.findById(trainingId).orElseThrow(() -> new ResourceNotFoundException("Training not found"));
 
         return exerciseRepository.findExercisesByUser_EmailAndTrainingsContains(userEmail, training)
                 .stream()
@@ -65,7 +68,7 @@ public class ExerciseService {
     }
 
     public Integer updateExerciseById(Integer exerciseId, ExerciseRequest request) {
-        ExerciseType type = exerciseTypeRepository.findByName(request.getType()).orElseThrow();
+        ExerciseType type = exerciseTypeRepository.findByName(request.getType()).orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
         exerciseRepository.findById(exerciseId)
                 .map(exercise -> {
                     exercise.setName(request.getName());
@@ -95,8 +98,8 @@ public class ExerciseService {
 
     public Integer addNewExercise(String userEmail, ExerciseRequest request) {
 
-        ExerciseType type = exerciseTypeRepository.findByName(request.getType()).orElseThrow();
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        ExerciseType type = exerciseTypeRepository.findByName(request.getType()).orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Exercise exercise = new Exercise();
         exercise.setName(request.getName());
@@ -112,9 +115,28 @@ public class ExerciseService {
 
     }
 
+    public void addExerciseToTrainings(Integer exerciseId, TrainingListRequest trainingIds) {
+
+        Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
+
+        trainingIds.getTrainings().forEach(trainingRequest -> {
+            Training training = trainingRepository.findById(trainingRequest.getId()).orElseThrow(() -> new ResourceNotFoundException("Training not found"));
+            training.getExercises().add(exercise);
+            exercise.getTrainings().add(training);
+            trainingRepository.save(training);
+            exerciseRepository.save(exercise);
+
+        });
+
+    }
+
 
     public void removeById(Integer id) {
-        exerciseRepository.deleteById(id);
+        if (exerciseRepository.existsById(id)) {
+            exerciseRepository.deleteById(id);
+        } else {
+            throw new DeleteException("Object not found");
+        }
     }
 
 }
