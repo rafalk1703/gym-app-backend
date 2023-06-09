@@ -10,4 +10,6 @@ import java.util.List;
 public interface TrainingRepository extends JpaRepository<Training, Integer> {
 
     List<Training> findTrainingsByUser_Email(String userEmail);
+
+    List<Training> findTrainingsByExercisesContains(Exercise exercise);
 }

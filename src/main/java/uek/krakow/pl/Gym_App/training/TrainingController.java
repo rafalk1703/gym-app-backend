@@ -28,6 +28,11 @@ public class TrainingController {
         return new ResponseEntity<>(trainingService.getTrainingById(trainingId), HttpStatus.OK);
     }
 
+    @GetMapping("/exercise/{exerciseId}")//not tested
+    public ResponseEntity<List<TrainingResponse>> getTrainingsByExercise(@PathVariable("exerciseId") Integer exerciseId) {
+        return new ResponseEntity<>(trainingService.getTrainingsByExercise(exerciseId), HttpStatus.OK);
+    }
+
     @PutMapping("/{trainingId}")
     public ResponseEntity<Integer> updateExercise(@PathVariable("trainingId") Integer trainingId, @RequestBody TrainingRequest request) {
         return new ResponseEntity<>(trainingService.updateTrainingById(trainingId, request), HttpStatus.OK);

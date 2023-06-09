@@ -19,6 +19,8 @@ public class TrainingService {
 
     private final UserRepository userRepository;
 
+    private final ExerciseRepository exerciseRepository;
+
     private final TrainingResponseMapper trainingResponseMapper;
 
     public TrainingResponse getTrainingById(int trainingId) {
@@ -55,6 +57,14 @@ public class TrainingService {
         return trainingId;
     }
 
+    public List<TrainingResponse> getTrainingsByExercise(Integer exerciseId) {
+        Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
+
+        return trainingRepository.findTrainingsByExercisesContains(exercise)
+                .stream()
+                .map(trainingResponseMapper)
+                .collect(Collectors.toList());
+    }
 
     public Integer addNewTraining(String userEmail, TrainingRequest request) {
 
