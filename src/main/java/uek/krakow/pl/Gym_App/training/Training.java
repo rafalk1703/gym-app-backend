@@ -25,6 +25,12 @@ public class Training {
     @Column(nullable = false)
     public String name;
 
+    @Column()
+    public String imageUrl;
+
+    @Column()
+    public String icon;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User user;
