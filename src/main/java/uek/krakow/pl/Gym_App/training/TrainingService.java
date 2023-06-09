@@ -72,6 +72,8 @@ public class TrainingService {
 
         Training training = new Training();
         training.setName(request.getName());
+        training.setIcon(request.getIcon());
+        training.setImageUrl(request.getImageUrl());
         training.setUser(user);
 
         return trainingRepository.save(training).getId();

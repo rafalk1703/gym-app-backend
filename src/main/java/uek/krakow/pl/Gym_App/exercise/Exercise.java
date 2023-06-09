@@ -26,6 +26,9 @@ public class Exercise {
     @Column(nullable = false)
     public String name;
 
+    @Column()
+    public String imageUrl;
+
     @Column(nullable = false)
     public String description;
 

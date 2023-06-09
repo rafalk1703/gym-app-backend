@@ -13,4 +13,6 @@ public class ExerciseTypeResponse {
 
     private Integer id;
     private String name;
+
+    private String imageUrl;
 }

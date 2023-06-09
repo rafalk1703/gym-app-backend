@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class TrainingRequest {
 
     private String name;
+    private String imageUrl;
+    private String icon;
 
 }

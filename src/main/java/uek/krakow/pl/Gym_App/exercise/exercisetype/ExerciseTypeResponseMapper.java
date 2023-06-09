@@ -12,6 +12,7 @@ public class ExerciseTypeResponseMapper implements Function<ExerciseType, Exerci
         return ExerciseTypeResponse.builder()
                 .id(exerciseType.getId())
                 .name(exerciseType.getName())
+                .imageUrl(exerciseType.getImageUrl())
                 .build();
     }
 }

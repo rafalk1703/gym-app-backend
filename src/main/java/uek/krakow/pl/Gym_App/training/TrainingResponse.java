@@ -14,4 +14,8 @@ public class TrainingResponse {
     private Integer id;
     private String name;
 
+    private String imageUrl;
+    private String icon;
+
+
 }

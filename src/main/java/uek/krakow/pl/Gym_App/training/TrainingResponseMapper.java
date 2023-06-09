@@ -13,6 +13,8 @@ public class TrainingResponseMapper  implements Function<Training, TrainingRespo
         return TrainingResponse.builder()
                 .id(training.getId())
                 .name(training.getName())
+                .imageUrl(training.getImageUrl())
+                .icon(training.getIcon())
                 .build();
     }
 }

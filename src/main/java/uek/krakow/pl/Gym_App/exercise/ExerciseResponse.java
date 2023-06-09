@@ -20,6 +20,8 @@ public class ExerciseResponse {
 
     private String name;
 
+    private String imageUrl;
+
     private String description;
 
     private ExerciseLevel level;

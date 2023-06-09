@@ -23,6 +23,9 @@ public class ExerciseType {
     @Column(unique = true)
     public String name;
 
+    @Column()
+    public String imageUrl;
+
     @OneToMany(mappedBy = "type")
     private List<Exercise> exercises;
 }

@@ -12,6 +12,7 @@ public class ExerciseResponseMapper  implements Function<Exercise, ExerciseRespo
         return ExerciseResponse.builder()
                 .id(exercise.getId())
                 .name(exercise.getName())
+                .imageUrl(exercise.getImageUrl())
                 .description(exercise.getDescription())
                 .level(exercise.getLevel())
                 .time(exercise.getTime())
