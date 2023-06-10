@@ -9,6 +9,7 @@ import uek.krakow.pl.Gym_App.exercise.exercisetype.ExerciseType;
 import uek.krakow.pl.Gym_App.training.Training;
 import uek.krakow.pl.Gym_App.user.User;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,7 +53,9 @@ public class Exercise {
     @JoinColumn(name = "type_id")
     public ExerciseType type;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    public List<Training> trainings;
+    @ManyToMany(fetch = FetchType.EAGER)
+    public List<Training> trainings = new ArrayList<>();
+
+
 
 }

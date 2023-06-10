@@ -9,6 +9,7 @@ import uek.krakow.pl.Gym_App.exercise.Exercise;
 import uek.krakow.pl.Gym_App.traininglog.TrainingLog;
 import uek.krakow.pl.Gym_App.user.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -38,6 +39,6 @@ public class Training {
     @OneToMany(mappedBy = "training")
     private List<TrainingLog> trainingLogs;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    public List<Exercise> exercises;
+    @ManyToMany(fetch = FetchType.EAGER)
+    public List<Exercise> exercises = new ArrayList<>();
 }

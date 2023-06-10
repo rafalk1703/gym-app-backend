@@ -15,6 +15,7 @@ import uek.krakow.pl.Gym_App.traininglog.TrainingLogRepository;
 import uek.krakow.pl.Gym_App.user.User;
 import uek.krakow.pl.Gym_App.user.UserRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -130,10 +131,8 @@ public class DataLoaderService {
                 .build();
 
         exerciseRepository.saveAll(List.of(sklony, cwiczenie1, cwiczenie2, cwiczenie3, cwiczenie4, cwiczenie5, cwiczenie6, cwiczenie7));
-
         Training training1 = Training.builder()
                 .name("Trening 1")
-                .exercises(List.of(sklony, cwiczenie1, cwiczenie6, cwiczenie2))
                 .icon("mdi-run")
                 .user(user)
                 .imageUrl("https://images.pexels.com/photos/414029/pexels-photo-414029.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1").build();
@@ -144,7 +143,6 @@ public class DataLoaderService {
                 .user(user)
                 .imageUrl("https://images.pexels.com/photos/866027/pexels-photo-866027.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1").build();
 
-        trainingRepository.saveAll(List.of(training1, training2));
 
         Date date10min = new Date(System.currentTimeMillis() - 600 * 1000);
         TrainingLog trainingLog1 = TrainingLog.builder().training(training1).isDone(true).endDate(String.valueOf(new Date())).startDate(String.valueOf(date10min)).build();
@@ -155,8 +153,27 @@ public class DataLoaderService {
         TrainingLog trainingLog6 = TrainingLog.builder().training(training1).isDone(true).endDate(String.valueOf(minusDate(3000))).startDate(String.valueOf(String.valueOf(minusDate(3010)))).build();
         TrainingLog trainingLog7 = TrainingLog.builder().training(training1).isDone(true).endDate(String.valueOf(minusDate(1000))).startDate(String.valueOf(String.valueOf(minusDate(1010)))).build();
 
-        trainingLogRepository.saveAll(List.of(trainingLog1, trainingLog2, trainingLog3, trainingLog4, trainingLog5, trainingLog6, trainingLog7));
+        List<Exercise> exerciseList= new ArrayList<>();
+        exerciseList.add(cwiczenie1);
+        training1.setExercises(exerciseList);
 
+        List<Training> trainingList = new ArrayList<>();
+        trainingList.add(training1);
+        cwiczenie1.setTrainings(trainingList);
+
+
+        trainingRepository.save(training1);
+        trainingRepository.save(training2);
+
+        List<TrainingLog> trainingLogList= new ArrayList<>();
+        trainingLogList.add(trainingLog1);
+        trainingLogList.add(trainingLog2);
+        trainingLogList.add(trainingLog3);
+        trainingLogList.add(trainingLog4);
+        trainingLogList.add(trainingLog5);
+        trainingLogList.add(trainingLog6);
+        trainingLogList.add(trainingLog7);
+        trainingLogRepository.saveAll(trainingLogList);
     }
 
     private Date minusDate (Integer minutes) {

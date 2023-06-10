@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TrainingLogController {
 
-    private static TrainingLogService trainingLogService;
+    private final TrainingLogService trainingLogService;
 
     private final JwtService jwtService;
 
