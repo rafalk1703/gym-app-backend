@@ -53,8 +53,8 @@ public class Exercise {
     @JoinColumn(name = "type_id")
     public ExerciseType type;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    public List<Training> trainings = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    public List<Training> trainings = new LinkedList<>();
 
 
 

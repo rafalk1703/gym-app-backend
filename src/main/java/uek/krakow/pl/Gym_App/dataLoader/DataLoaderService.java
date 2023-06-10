@@ -55,7 +55,10 @@ public class DataLoaderService {
                 .name("Kardio")
                 .imageUrl("https://images.pexels.com/photos/16065652/pexels-photo-16065652/free-photo-of-mezczyzna-plaza-okulary-sloneczne-piasek.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
                 .build();
-        exerciseTypeRepository.saveAll(List.of(plecy, nogi, klata, kardio));
+        exerciseTypeRepository.save(plecy);
+        exerciseTypeRepository.save(nogi);
+        exerciseTypeRepository.save(klata);
+        exerciseTypeRepository.save(kardio);
 
         Exercise sklony = Exercise.builder()
                 .name("Skłony")
@@ -130,7 +133,15 @@ public class DataLoaderService {
                 .imageUrl("https://images.pexels.com/photos/866027/pexels-photo-866027.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
                 .build();
 
-        exerciseRepository.saveAll(List.of(sklony, cwiczenie1, cwiczenie2, cwiczenie3, cwiczenie4, cwiczenie5, cwiczenie6, cwiczenie7));
+        exerciseRepository.save(sklony);
+        exerciseRepository.save(cwiczenie1);
+        exerciseRepository.save(cwiczenie2);
+        exerciseRepository.save(cwiczenie3);
+        exerciseRepository.save(cwiczenie4);
+        exerciseRepository.save(cwiczenie5);
+        exerciseRepository.save(cwiczenie6);
+        exerciseRepository.save(cwiczenie7);
+
         Training training1 = Training.builder()
                 .name("Trening 1")
                 .icon("mdi-run")
@@ -138,7 +149,6 @@ public class DataLoaderService {
                 .imageUrl("https://images.pexels.com/photos/414029/pexels-photo-414029.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1").build();
         Training training2 = Training.builder()
                 .name("Trening 2")
-                .exercises(List.of(cwiczenie3, cwiczenie4, cwiczenie2, cwiczenie7))
                 .icon("mdi-plus")
                 .user(user)
                 .imageUrl("https://images.pexels.com/photos/866027/pexels-photo-866027.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1").build();
@@ -152,6 +162,22 @@ public class DataLoaderService {
         TrainingLog trainingLog5 = TrainingLog.builder().training(training1).isDone(true).endDate(String.valueOf(minusDate(4000))).startDate(String.valueOf(String.valueOf(minusDate(4010)))).build();
         TrainingLog trainingLog6 = TrainingLog.builder().training(training1).isDone(true).endDate(String.valueOf(minusDate(3000))).startDate(String.valueOf(String.valueOf(minusDate(3010)))).build();
         TrainingLog trainingLog7 = TrainingLog.builder().training(training1).isDone(true).endDate(String.valueOf(minusDate(1000))).startDate(String.valueOf(String.valueOf(minusDate(1010)))).build();
+
+        trainingRepository.save(training1);
+        exerciseRepository.save(cwiczenie1);
+
+
+
+//        training.getExercises().add(exercise);
+//        exercise.getTrainings().add(training);
+//        trainingRepository.save(training);
+//        exerciseRepository.save(exercise);
+
+//        cwiczenie1.getTrainings().add(training1);
+//        training1.getExercises().add(cwiczenie1);
+//
+//        trainingRepository.save(training1);
+//        exerciseRepository.save(cwiczenie1);
 
         List<Exercise> exerciseList= new ArrayList<>();
         exerciseList.add(cwiczenie1);

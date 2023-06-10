@@ -49,6 +49,11 @@ public class ExerciseController {
         return new ResponseEntity<>(exerciseService.getAllExercisesByUserEmailAndTrainingId(userEmail, trainingId), HttpStatus.OK);
     }
 
+    @GetMapping("/global/training/{trainingId}")
+    public ResponseEntity<List<ExerciseResponse>> getAllGlobalExercisesByTraining(@PathVariable("trainingId") Integer trainingId) {
+        return new ResponseEntity<>(exerciseService.getAllExercisesByTrainingId(trainingId), HttpStatus.OK);
+    }
+
 
     @GetMapping("/{exerciseId}")
     public ResponseEntity<ExerciseResponse> getExerciseById(@PathVariable("exerciseId") Integer exerciseId) {

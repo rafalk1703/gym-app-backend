@@ -19,5 +19,7 @@ public interface ExerciseRepository  extends JpaRepository<Exercise, Integer> {
 
     List<Exercise> findExercisesByUsersContainsAndTrainingsContains(User user, Training training);
 
+    List<Exercise> findExercisesByTrainingsContains(Training training);
+
 
 }

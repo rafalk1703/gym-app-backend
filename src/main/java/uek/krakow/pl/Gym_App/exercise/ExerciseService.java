@@ -63,7 +63,28 @@ public class ExerciseService {
         Training training = trainingRepository.findById(trainingId).orElseThrow(() -> new ResourceNotFoundException("Training not found"));
         User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
+        System.out.println("getAllExercisesByUserEmailAndTrainingId");
+        training.getExercises().forEach(e -> {
+            System.out.println(e.name.toString());
+        });
+
+
         return exerciseRepository.findExercisesByUsersContainsAndTrainingsContains(user, training)
+                .stream()
+                .map(exerciseResponseMapper)
+                .collect(Collectors.toList());
+    }
+
+    public List<ExerciseResponse> getAllExercisesByTrainingId(Integer trainingId) {
+        Training training = trainingRepository.findById(trainingId).orElseThrow(() -> new ResourceNotFoundException("Training not found"));
+
+        System.out.println("getAllExercisesByUserEmailAndTrainingId");
+        training.getExercises().forEach(e -> {
+            System.out.println(e.name.toString());
+        });
+
+
+        return exerciseRepository.findExercisesByTrainingsContains(training)
                 .stream()
                 .map(exerciseResponseMapper)
                 .collect(Collectors.toList());
